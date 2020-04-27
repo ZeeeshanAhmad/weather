@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <link rel="stylesheet" href="weather.css">
+        <title>Weather App</title>
+    </head>
+    <body>
+        
+        <div class="dispay"></div>
+        <div class="main">
+            <div class="select_main1">
+                <div class="country"></div>
+                <div class="temperture"></div>
+                <img src="a7.jpg" onclick="refresh()" id="refresh">
+            </div>
+            <div class="select_main2">
+                <input type="text" name="" class="select_country" placeholder="Search Here Countries....">
+                <button onclick="storeData()">CHECK</button>
+            </div>
+            <h1 class="text">
+                Click On Image to Refresh</h1>
+            </div>
+            
+            
+            <script src="./jquery-3.4.1.min.js"></script>
+            <script>
+                
+                function refresh(){
+                    $('.temperture').text("REFRESHING")
+                    location.reload();
+                }
+                let select_country=document.querySelector('.select_country')
+                let country=document.querySelector('.country')
+                function storeData(){
+                    
+                    $('.temperture').text("Please Waite....")
+                    $.ajax({
+                        method:'GET',
+                        url:`https://api.openweathermap.org/data/2.5/weather?q=${$(select_country).val()}&appid=b189f31bd264510e4848acac84074ab4&units=metric`,
+                        
+                        success:function(reponse,status){
+                            console.log(reponse)
+                            console.log(reponse.main.temp)
+                            console.log(reponse.weather["0"].main)
+                            var selectedCountry = $(".select_country").val();
+                            $('.country').text(selectedCountry)
+                            console.log(selectedCountry) 
+                            $('.temperture').text(reponse.main.temp+ '℃ ' + reponse.weather["0"].main)
+                        },
+                        error:function(_ajax,status){
+                            console.log(status);
+                        }
+                    })
+                }
+                
+            </script>
+</body>
+</html>
